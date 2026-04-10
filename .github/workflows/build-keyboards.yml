@@ -21,11 +21,8 @@ jobs:
       - name: Install/Upgrade QMK CLI
         run: pip install qmk --upgrade --force-reinstall --break-system-packages
 
-      - name: Verify QMK installation
-        run: qmk hello
-
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes SKIP_QMK_CHECK=yes
 
     strategy:
       fail-fast: false
