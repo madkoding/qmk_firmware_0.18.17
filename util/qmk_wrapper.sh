@@ -10,6 +10,14 @@ while [[ $# -gt 0 ]]; do
             output_file="$2"
             shift 2
             ;;
+        --output=*)
+            output_file="${1#--output=}"
+            shift
+            ;;
+        -o*)
+            output_file="${1#-o}"
+            shift
+            ;;
         *)
             shift
             ;;
@@ -20,6 +28,8 @@ write_output() {
     if [[ -n "$output_file" && "$output_file" != -* ]]; then
         mkdir -p "$(dirname "$output_file")"
         cat > "$output_file"
+    else
+        cat
     fi
 }
 
