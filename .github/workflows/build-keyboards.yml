@@ -1,0 +1,29 @@
+name: Build Keyboards
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+    strategy:
+      fail-fast: false
+      matrix:
+        keyboard:
+          - { name: crkbd, keymap: zonekeyboards }
+          - { name: sofle, keymap: zonekeyboards }
+          - { name: lily58, keymap: zonekeyboards }
+          - { name: lily58zk, keymap: zonekeyboards }
+          - { name: reviung41, keymap: zonekeyboards }
+          - { name: zkpad, keymap: default }
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}

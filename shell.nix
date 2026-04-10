@@ -7,6 +7,9 @@ let
   # updated `tomlkit` must be used by `makeRemoveSpecialDependenciesHook`
   # inside `poetry2nix`, therefore just providing the updated version through
   # our `nix/pyproject.toml` does not work, and using an overlay is required.
+  #
+  # SECURITY: This hardcoded hash should be verified periodically for supply chain integrity.
+  # If you encounter hash mismatch errors, run: nix-prefetch-url --type sha256 --name tomlkit https://files.pythonhosted.org/packages/.../tomlkit-0.11.4.tar.gz
   pythonOverlay = final: prev: {
     python3 = prev.python3.override {
       packageOverrides = self: super: {
