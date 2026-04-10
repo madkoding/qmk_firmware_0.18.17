@@ -9,7 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: qmkfm/qmk_cli
+    container: qmkfm/qmk_cli:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fix script permissions
+        run: chmod +x util/list_keyboards.sh
+
+      - name: Install QMK CLI
+        run: pip install qmk --break-system-packages
+
+      - name: Verify QMK installation
+        run: qmk --version
+
+      - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
+
     strategy:
       fail-fast: false
       matrix:
@@ -20,13 +37,3 @@ jobs:
           - { name: lily58zk, keymap: zonekeyboards }
           - { name: reviung41, keymap: zonekeyboards }
           - { name: zkpad, keymap: default }
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Fix script permissions
-        run: chmod +x util/list_keyboards.sh
-
-      - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
