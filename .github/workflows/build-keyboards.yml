@@ -23,6 +23,16 @@ jobs:
       - name: Install/Upgrade QMK CLI
         run: pip install qmk --upgrade --force-reinstall --break-system-packages
 
+      - name: Fetch QMK library dependencies
+        run: |
+          mkdir -p lib
+          [ -d lib/lufa/.git ] || git clone --depth 1 https://github.com/qmk/lufa.git lib/lufa
+          [ -d lib/chibios/.git ] || git clone --depth 1 https://github.com/qmk/ChibiOS.git lib/chibios
+          [ -d lib/chibios-contrib/.git ] || git clone --depth 1 https://github.com/qmk/ChibiOS-Contrib.git lib/chibios-contrib
+          [ -d lib/vusb/.git ] || git clone --depth 1 https://github.com/qmk/v-usb.git lib/vusb
+          [ -d lib/printf/.git ] || git clone --depth 1 https://github.com/qmk/printf.git lib/printf
+          [ -d lib/pico-sdk/.git ] || git clone --depth 1 https://github.com/qmk/pico-sdk.git lib/pico-sdk
+
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
         run: |
           cp util/qmk_wrapper.sh /tmp/qmk_wrapper && chmod +x /tmp/qmk_wrapper
