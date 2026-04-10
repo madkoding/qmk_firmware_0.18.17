@@ -16,13 +16,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Fix script permissions
-        run: chmod +x util/list_keyboards.sh
+        run: chmod +x util/list_keyboards.sh util/qmk_wrapper.sh
 
       - name: Install/Upgrade QMK CLI
         run: pip install qmk --upgrade --force-reinstall --break-system-packages
 
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes SKIP_QMK_CHECK=yes
+        run: |
+          cp util/qmk_wrapper.sh /tmp/qmk_wrapper && chmod +x /tmp/qmk_wrapper
+          make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes SKIP_QMK_CHECK=yes QMK_BIN=/tmp/qmk_wrapper
 
     strategy:
       fail-fast: false

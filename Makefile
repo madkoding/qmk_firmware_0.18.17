@@ -34,7 +34,7 @@ endif
 endif
 
 # Determine which qmk cli to use
-QMK_BIN := qmk
+QMK_BIN ?= qmk
 
 # avoid 'Entering|Leaving directory' messages
 MAKEFLAGS += --no-print-directory
