@@ -18,10 +18,10 @@ jobs:
           submodules: recursive
 
       - name: Fix script permissions
-        run: chmod +x util/list_keyboards.sh util/qmk_wrapper.sh
+        run: chmod +x util/list_keyboards.sh
 
-      - name: Install/Upgrade QMK CLI
-        run: pip install qmk --upgrade --force-reinstall --break-system-packages
+      - name: Install modern QMK CLI
+        run: pip install --upgrade --force-reinstall --break-system-packages "qmk @ git+https://github.com/qmk/qmk_cli.git"
 
       - name: Fetch QMK library dependencies
         run: |
@@ -45,9 +45,7 @@ jobs:
           fi
 
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: |
-          cp util/qmk_wrapper.sh /tmp/qmk_wrapper && chmod +x /tmp/qmk_wrapper
-          make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes SKIP_QMK_CHECK=yes QMK_BIN=/tmp/qmk_wrapper
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
 
     strategy:
       fail-fast: false
