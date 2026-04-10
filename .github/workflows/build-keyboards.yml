@@ -25,7 +25,7 @@ jobs:
         run: qmk --version
 
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes SKIP_QMK_CHECK=yes
 
     strategy:
       fail-fast: false
