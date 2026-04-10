@@ -4,7 +4,7 @@
 
 set -e
 
-HOOK_SOURCE="$(cd "$(dirname "$0")" && pwd)/.git/hooks/pre-commit"
+HOOK_SOURCE="$(cd "$(dirname "$0")/.." && pwd)/hooks/pre-commit"
 HOOK_TARGET="$(pwd)/.git/hooks/pre-commit"
 HOOK_DIR="$(pwd)/.git/hooks"
 
