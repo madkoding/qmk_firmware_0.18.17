@@ -250,6 +250,8 @@ void rgblight_init(void) {
 
     rgblight_timer_init(); // setup the timer
 
+    srand(timer_read32());
+
     if (rgblight_config.enable) {
         rgblight_mode_noeeprom(rgblight_config.mode);
     }
