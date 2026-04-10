@@ -33,6 +33,17 @@ jobs:
           [ -d lib/printf/.git ] || git clone --depth 1 https://github.com/qmk/printf.git lib/printf
           [ -d lib/pico-sdk/.git ] || git clone --depth 1 https://github.com/qmk/pico-sdk.git lib/pico-sdk
 
+      - name: Restore bundled libs missing from this fork
+        run: |
+          if [ ! -f lib/lib8tion/lib8tion.h ] || [ ! -f lib/fnv/fnv.h ]; then
+            rm -rf /tmp/qmk_upstream
+            git clone --depth 1 --filter=blob:none --sparse --branch 0.18.17 https://github.com/qmk/qmk_firmware.git /tmp/qmk_upstream
+            git -C /tmp/qmk_upstream sparse-checkout set lib/lib8tion lib/fnv
+            mkdir -p lib
+            cp -R /tmp/qmk_upstream/lib/lib8tion lib/lib8tion
+            cp -R /tmp/qmk_upstream/lib/fnv lib/fnv
+          fi
+
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
         run: |
           cp util/qmk_wrapper.sh /tmp/qmk_wrapper && chmod +x /tmp/qmk_wrapper
