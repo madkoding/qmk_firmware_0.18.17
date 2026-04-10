@@ -25,5 +25,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fix script permissions
+        run: chmod +x util/list_keyboards.sh
+
       - name: Build ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
-        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }}
+        run: make ${{ matrix.keyboard.name }}:${{ matrix.keyboard.keymap }} SKIP_GIT=yes
